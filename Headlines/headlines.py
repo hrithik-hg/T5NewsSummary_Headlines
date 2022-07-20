@@ -36,6 +36,7 @@ model.train(train_df = train_df[: 5000],
             eval_df = test_df[: 100],
             source_max_token_len = 128,
             target_max_token_len = 50,
+            outputdir = "outputs",
             batch_size = 8, max_epochs = 5, use_gpu = True)
 
 print(os.listdir('outputs'))
