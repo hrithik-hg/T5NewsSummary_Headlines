@@ -4,22 +4,18 @@ from sklearn.model_selection import train_test_split
 """# Preprocessing The Data"""
 
 df = pd.read_csv('news_summary.csv', encoding = 'Latin-1')
-df.head()
 
 df=df[["headlines","text"]]
-df.head()
 
 """# T5Data with Training Data Column Name:- sorce_text & target_text"""
 
 df.columns = ["target_text","source_text"]
 df = df.dropna()
 df=df[["source_text","target_text"]]
-df.head()
 
 """# T5 Data with Summarize prefix"""
 
 df["source_text"] = "summarize: " + df["source_text"]
-df.head()
 
 """# Splitting the dataset into Training and Test dataframe"""
 
@@ -41,11 +37,13 @@ model.train(train_df = train_df[: 5000],
             target_max_token_len = 50,
             batch_size = 8, max_epochs = 5, use_gpu = True)
 
-! (cd outputs; ls)
+print(os.listdir('outputs'))
 
 """# Inference"""
 
-model.load_model("t5", "outputs/simplet5-epoch-4-train-loss-0.6197-val-loss-1.5595", use_gpu = True)
+path_ = input("Enter the least error Epoch path: ")
+model.load_model("t5", "outputs/"+path_, use_gpu = True)
+
 
 """# Headlines Prediction"""
 
@@ -59,4 +57,4 @@ The Trump administration has previously fixed May 1 as a possible date to reopen
 
 preprocess_text = text.strip().replace("\n","")
 prepared_Text = "summarize: " + preprocess_text
-model.predict(prepared_Text)
+print(model.predict(prepared_Text))
